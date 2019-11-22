@@ -60,7 +60,6 @@ step4 : TF-record 만들기
          xml_df.to_csv('data/{}_labels.csv'.format(directory), index=None)
          print('Successfully converted xml to csv.')
  main()
-
 ‘object-detection’폴더에서 ‘data’라는 새로운 폴더를 생성 후 ‘object-detection’ 폴더 내에서 터미널을 열어 아래의 명령을 차례대로 실행
 
 >#### $ sudo pip3 install pandas
