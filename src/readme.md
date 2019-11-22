@@ -436,4 +436,5 @@ Variables’ 코드를
     IMAGE_SIZE = (12, 8)
 ‘Cell – Run All’
 
-<img src="/jainovation/SSD_Deep_learning_Test/blob/master/src/test1.png" width="450px" height="300px" title="500" alt="test1.png"></img><br/>
+![test1](https://user-images.githubusercontent.com/55830662/69397442-8ab29100-0d29-11ea-9779-57910137c50f.png)
+
