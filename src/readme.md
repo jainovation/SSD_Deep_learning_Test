@@ -3,7 +3,7 @@
 
 >### 사용환경 : Linux, python3, tensorflow api
 step1 : Tensorflow API 설치
-==========================
+--------------------------
  바탕화면에서 http://www.birc.co.kr/download/2809/ 에서 models파일을 다운받은 후 압축해제한다.
  터미널을 실행한 후 다음과 같은 라이브러리를 설치
  sudo pip install pillow - (설치가 안될 경우 pip3로 수정해서 진행하고 pip가 업그레이드 오류 시 sudo python3 -m pip uninstall pip && sudo                              apt-get install python3-pip --reinstall)
