@@ -435,3 +435,5 @@ Variables’ 코드를
     # Size, in inches, of the output images.
     IMAGE_SIZE = (12, 8)
 ‘Cell – Run All’
+
+![Alt text](/SSD_DEep_learning_Test/test1.jpg
