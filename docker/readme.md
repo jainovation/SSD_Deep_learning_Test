@@ -39,3 +39,25 @@ curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.li
 
 <사용예제>
 >### $nvidia-docker run -it --name mycuda  --runtime=nvidia  --ipc=host  -e DISPLAY=$DISPLAY  -v /tmp/.X11-unix:/tmp/.X11-unix  -v /data:/data  -p 80:80 -p 443:443 -p 8097:8097 -p 8080:8080 -p 6000:6000 --restart="always" nvidia/cuda:9.2-cudnn7-runtime-ubuntu16.04  bash
+
+3. Docker에 필요한 라이브러리
+---------------------------------
+>## $apt-get update
+>## $apt-get upgrade
+>## $apt-get install sudo
+>## $apt-get install vim
+>## $apt-get install python3
+>## $apt-get install python3-pip
+>## $pip3 install tensorflow==1.14.0
+>## $pip3 install tensorflow-gpu==1.14.0
+>## $pip3 install keras
+>## $pip3 install numpy==1.16.4
+>## $pip3 install scipy
+>## $pip3 install matplotlib
+>## $pip3 instlall spyder
+>## $apt-get install python3-tk
+>## $pip3 install pillow
+>## $pip3 install lxml
+>## $pip3 install jupyter
+>## $pip3 install pandas
+(pip main 오류시 python3 -m pip install --user --upgrade pip==9.0.3)
