@@ -15,11 +15,11 @@ step1 : Tensorflow API 설치
  export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
  sudo python3 setup.py install
  
->### step2 : 이미지 수집
+step2 : 이미지 수집
 ======================
 traffic light 사진 수집
 
->### step3 : object labeling
+step3 : object labeling
 =============================
 git clone https://github.com/tzutalin/labelImg
 sudo apt-get install pyqt5-dev-tools
@@ -27,7 +27,7 @@ cd labelImg
 make qt5py3
 python3 labelImg.py
 
->### step4 : TF-record 만들기
+step4 : TF-record 만들기
 ==============================
 ‘object-detection’을 바탕화면에서 생성 후 ‘object-detection’폴더에서 새로운 문서의 이름을 ‘xml_to_csv.py’로 입력한 다음 저장한 다음 해당 파일을 실행합니다.
 
@@ -192,7 +192,7 @@ cd object-detection
 python3 generate_tfrecord.py --csv_input=data/train_labels.csv --output_path=data/train.record
 python3 generate_tfrecord.py --csv_input=data/test_labels.csv --output_path=data/test.record
 
->### step5 : 기기학습
+step5 : 기기학습
 =======================================
 http://www.birc.co.kr/download/2803/  파일을 다운로드한 다음 ‘object-detection’ 폴더에 압축 해제
 
@@ -402,7 +402,7 @@ export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
 cd object_detection 
 python3 train.py --logtostderr --train_dir=training/ --pipeline_config_path=training/ssd_mobilenet_v1_pets.config
 
->### step6 : 결과 확인
+step6 : 결과 확인
 =====================
 ‘Desktop/models’에서 터미널을 실행한 다음
 export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
