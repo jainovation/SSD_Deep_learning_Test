@@ -30,7 +30,6 @@ step3 : object labeling
 step4 : TF-record 만들기
 ==============================
 ### ‘object-detection’을 바탕화면에서 생성 후 ‘object-detection’폴더에서 새로운 문서의 이름을 ‘xml_to_csv.py’로 입력한 다음 저장한 다음 해당 파일을 실행합니다.
-
  import os
  import glob
  import pandas as pd
