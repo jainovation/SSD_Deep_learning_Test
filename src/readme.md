@@ -98,7 +98,7 @@ step4 : TF-record 만들기
 
     ' TO-DO replace this with label map'
     def class_text_to_int(row_label):
-        if row_label == 'macncheese':
+        if row_label == 'traffic light':
             return 1
         else:
             None
@@ -148,38 +148,39 @@ step4 : TF-record 만들기
      }))
      return tf_example
 
- def main(_):
-     writer = tf.python_io.TFRecordWriter(FLAGS.output_path)
-     path = os.path.join(os.getcwd(), 'images')
-     examples = pd.read_csv(FLAGS.csv_input)
-     grouped = split(examples, 'filename')
-     for group in grouped:
-         tf_example = create_tf_example(group, path)
-         writer.write(tf_example.SerializeToString())
+    def main(_):
+        writer = tf.python_io.TFRecordWriter(FLAGS.output_path)
+        path = os.path.join(os.getcwd(), 'images')
+        examples = pd.read_csv(FLAGS.csv_input)
+        grouped = split(examples, 'filename')
+        for group in grouped:
+            tf_example = create_tf_example(group, path)
+            writer.write(tf_example.SerializeToString())
 
      writer.close()
      output_path = os.path.join(os.getcwd(), FLAGS.output_path)
      print('Successfully created the TFRecords: {}'.format(output_path))
 
 
- if __name__ == '__main__':
-     tf.app.run()
+    if __name__ == '__main__':
+        tf.app.run()
 
 >## -> 해당 코딩이 오류가 발생할 시 main을 다음과 같이 변경한다.
- def main(_):    
-     print(os.getcwd())
-     writer = tf.python_io.TFRecordWriter('data/train.record')
-     # path = os.path.join(FLAGS.image_dir)
-     path = 'images/train'
-     # examples = pd.read_csv(FLAGS.csv_input)
-     examples = pd.read_csv('data/train_labels.csv')
-     grouped = split(examples, 'filename')
-     for group in grouped:
-         tf_example = create_tf_example(group, path)
-         writer.write(tf_example.SerializeToString())
-     writer.close()
-     output_path = os.path.join(os.getcwd(), FLAGS.output_path)
-     print('Successfully created the TFRecords: {}'.format(output_path))
+
+    def main(_):    
+        print(os.getcwd())
+        writer = tf.python_io.TFRecordWriter('data/train.record')
+        # path = os.path.join(FLAGS.image_dir)
+        path = 'images/train'
+        # examples = pd.read_csv(FLAGS.csv_input)
+        examples = pd.read_csv('data/train_labels.csv')
+        grouped = split(examples, 'filename')
+        for group in grouped:
+            tf_example = create_tf_example(group, path)
+            writer.write(tf_example.SerializeToString())
+        writer.close()
+        output_path = os.path.join(os.getcwd(), FLAGS.output_path)
+        print('Successfully created the TFRecords: {}'.format(output_path))
 
 >## main문을 다음과 같이 변경했을 경우 test
    
@@ -195,217 +196,217 @@ step5 : 기기학습
 http://www.birc.co.kr/download/2803/  파일을 다운로드한 다음 ‘object-detection’ 폴더에 압축 해제
 
 ‘object-dection’ 폴더 내에 ‘training’ 폴더를 새롭게 생성하고 새롭게 생성된 ‘training’ 폴더 내에서 ‘ssd_mobilenet_v1_pets.config’ 라는 제목의 새로운 문서를 생성한다. 그리고 ‘ssd_mobilenet_v1_pets.config’를 실행하여 아래의 코드를 복사해서 붙여넣은 후 저장.
-# SSD with Mobilenet v1, configured for the mac-n-cheese dataset.
-# Users should configure the fine_tune_checkpoint field in the train config as
-# well as the label_map_path and input_path fields in the train_input_reader and
-# eval_input_reader. Search for "${YOUR_GCS_BUCKET}" to find the fields that
-# should be configured.
+    # SSD with Mobilenet v1, configured for the mac-n-cheese dataset.
+    # Users should configure the fine_tune_checkpoint field in the train config as
+    # well as the label_map_path and input_path fields in the train_input_reader and
+    # eval_input_reader. Search for "${YOUR_GCS_BUCKET}" to find the fields that
+    # should be configured.
 
-model {
-  ssd {
-    num_classes: 1
-    box_coder {
-      faster_rcnn_box_coder {
-        y_scale: 10.0
-        x_scale: 10.0
-        height_scale: 5.0
-        width_scale: 5.0
-      }
-    }
-    matcher {
-      argmax_matcher {
-        matched_threshold: 0.5
-        unmatched_threshold: 0.5
-        ignore_thresholds: false
-        negatives_lower_than_unmatched: true
-        force_match_for_each_row: true
-      }
-    }
-    similarity_calculator {
-      iou_similarity {
-      }
-    }
-    anchor_generator {
-      ssd_anchor_generator {
-        num_layers: 6
-        min_scale: 0.2
-        max_scale: 0.95
-        aspect_ratios: 1.0
-        aspect_ratios: 2.0
-        aspect_ratios: 0.5
-        aspect_ratios: 3.0
-        aspect_ratios: 0.3333
-      }
-    }
-    image_resizer {
-      fixed_shape_resizer {
-        height: 300
-        width: 300
-      }
-    }
-    box_predictor {
-      convolutional_box_predictor {
-        min_depth: 0
-        max_depth: 0
-        num_layers_before_predictor: 0
-        use_dropout: false
-        dropout_keep_probability: 0.8
-        kernel_size: 1
-        box_code_size: 4
-        apply_sigmoid_to_scores: false
-        conv_hyperparams {
-          activation: RELU_6,
-          regularizer {
-            l2_regularizer {
-              weight: 0.00004
+    model {
+      ssd {
+        num_classes: 1
+        box_coder {
+          faster_rcnn_box_coder {
+            y_scale: 10.0
+            x_scale: 10.0
+            height_scale: 5.0
+            width_scale: 5.0
+          }
+        }
+        matcher {
+          argmax_matcher {
+            matched_threshold: 0.5
+            unmatched_threshold: 0.5
+            ignore_thresholds: false
+            negatives_lower_than_unmatched: true
+            force_match_for_each_row: true
+          }
+        }
+        similarity_calculator {
+          iou_similarity {
+          }
+        }
+        anchor_generator {
+          ssd_anchor_generator {
+            num_layers: 6
+            min_scale: 0.2
+            max_scale: 0.95
+            aspect_ratios: 1.0
+            aspect_ratios: 2.0
+            aspect_ratios: 0.5
+            aspect_ratios: 3.0
+            aspect_ratios: 0.3333
+          }
+        }
+        image_resizer {
+          fixed_shape_resizer {
+            height: 300
+            width: 300
+          }
+        }
+        box_predictor {
+          convolutional_box_predictor {
+            min_depth: 0
+            max_depth: 0
+            num_layers_before_predictor: 0
+            use_dropout: false
+            dropout_keep_probability: 0.8
+            kernel_size: 1
+            box_code_size: 4
+            apply_sigmoid_to_scores: false
+            conv_hyperparams {
+              activation: RELU_6,
+              regularizer {
+                l2_regularizer {
+                  weight: 0.00004
+                }
+              }
+              initializer {
+                truncated_normal_initializer {
+                  stddev: 0.03
+                  mean: 0.0
+                }
+              }
+              batch_norm {
+                train: true,
+                scale: true,
+                center: true,
+                decay: 0.9997,
+                epsilon: 0.001,
+              }
             }
           }
-          initializer {
-            truncated_normal_initializer {
-              stddev: 0.03
-              mean: 0.0
+        }
+        feature_extractor {
+          type: 'ssd_mobilenet_v1'
+          min_depth: 16
+          depth_multiplier: 1.0
+          conv_hyperparams {
+            activation: RELU_6,
+            regularizer {
+              l2_regularizer {
+                weight: 0.00004
+              }
+            }
+            initializer {
+              truncated_normal_initializer {
+                stddev: 0.03
+                mean: 0.0
+              }
+            }
+            batch_norm {
+              train: true,
+              scale: true,
+              center: true,
+              decay: 0.9997,
+              epsilon: 0.001,
             }
           }
-          batch_norm {
-            train: true,
-            scale: true,
-            center: true,
-            decay: 0.9997,
-            epsilon: 0.001,
+        }
+        loss {
+          classification_loss {
+            weighted_sigmoid {
+              anchorwise_output: true
+            }
           }
-        }
-      }
-    }
-    feature_extractor {
-      type: 'ssd_mobilenet_v1'
-      min_depth: 16
-      depth_multiplier: 1.0
-      conv_hyperparams {
-        activation: RELU_6,
-        regularizer {
-          l2_regularizer {
-            weight: 0.00004
+          localization_loss {
+            weighted_smooth_l1 {
+              anchorwise_output: true
+            }
           }
-        }
-        initializer {
-          truncated_normal_initializer {
-            stddev: 0.03
-            mean: 0.0
+          hard_example_miner {
+            num_hard_examples: 3000
+            iou_threshold: 0.99
+            loss_type: CLASSIFICATION
+            max_negatives_per_positive: 3
+            min_negatives_per_image: 0
           }
+          classification_weight: 1.0
+          localization_weight: 1.0
         }
-        batch_norm {
-          train: true,
-          scale: true,
-          center: true,
-          decay: 0.9997,
-          epsilon: 0.001,
+        normalize_loss_by_num_matches: true
+        post_processing {
+          batch_non_max_suppression {
+            score_threshold: 1e-8
+            iou_threshold: 0.6
+            max_detections_per_class: 100
+            max_total_detections: 100
+          }
+          score_converter: SIGMOID
         }
       }
     }
-    loss {
-      classification_loss {
-        weighted_sigmoid {
-          anchorwise_output: true
-        }
-      }
-      localization_loss {
-        weighted_smooth_l1 {
-          anchorwise_output: true
-        }
-      }
-      hard_example_miner {
-        num_hard_examples: 3000
-        iou_threshold: 0.99
-        loss_type: CLASSIFICATION
-        max_negatives_per_positive: 3
-        min_negatives_per_image: 0
-      }
-      classification_weight: 1.0
-      localization_weight: 1.0
-    }
-    normalize_loss_by_num_matches: true
-    post_processing {
-      batch_non_max_suppression {
-        score_threshold: 1e-8
-        iou_threshold: 0.6
-        max_detections_per_class: 100
-        max_total_detections: 100
-      }
-      score_converter: SIGMOID
-    }
-  }
-}
 
-train_config: {
-  batch_size: 10
-  optimizer {
-    rms_prop_optimizer: {
-      learning_rate: {
-        exponential_decay_learning_rate {
-          initial_learning_rate: 0.004
-          decay_steps: 800720
-          decay_factor: 0.95
+    train_config: {
+      batch_size: 10
+      optimizer {
+        rms_prop_optimizer: {
+          learning_rate: {
+            exponential_decay_learning_rate {
+              initial_learning_rate: 0.004
+              decay_steps: 800720
+              decay_factor: 0.95
+            }
+          }
+          momentum_optimizer_value: 0.9
+          decay: 0.9
+          epsilon: 1.0
         }
       }
-      momentum_optimizer_value: 0.9
-      decay: 0.9
-      epsilon: 1.0
+      fine_tune_checkpoint: "ssd_mobilenet_v1_coco_11_06_2017/model.ckpt"
+      from_detection_checkpoint: true
+      data_augmentation_options {
+        random_horizontal_flip {
+        }
+      }
+      data_augmentation_options {
+        ssd_random_crop {
+        }
+      }
     }
-  }
-  fine_tune_checkpoint: "ssd_mobilenet_v1_coco_11_06_2017/model.ckpt"
-  from_detection_checkpoint: true
-  data_augmentation_options {
-    random_horizontal_flip {
+
+    train_input_reader: {
+      tf_record_input_reader {
+        input_path: "data/train.record"
+      }
+      label_map_path: "data/object-detection.pbtxt"
     }
-  }
-  data_augmentation_options {
-    ssd_random_crop {
+
+    eval_config: {
+      num_examples: 40
     }
-  }
-}
 
-train_input_reader: {
-  tf_record_input_reader {
-    input_path: "data/train.record"
-  }
-  label_map_path: "data/object-detection.pbtxt"
-}
-
-eval_config: {
-  num_examples: 40
-}
-
-eval_input_reader: {
-  tf_record_input_reader {
-    input_path: "data/test.record"
-  }
-  label_map_path: "training/object-detection.pbtxt"
-  shuffle: false
-  num_readers: 1
-}
+    eval_input_reader: {
+      tf_record_input_reader {
+        input_path: "data/test.record"
+      }
+      label_map_path: "training/object-detection.pbtxt"
+      shuffle: false
+      num_readers: 1
+    }
     
 ‘training’ 폴더에서 ‘object-detection.pbtxt’ 라는 이름의 새로운 문서를 생성, ‘object-detection.pbtxt’를 실행한 후 아래의 코드를 복사하여 붙여넣은 다음 저장
 
-item{
-  id: 1
-  name: 'macncheese'
-}
+    item{
+      id: 1
+      name: 'traffic light'
+    }
 
 
 ‘object-detection.pbtxt’를 복사하여 ‘object-detection/data’에 붙여넣은 후 object-detection 내의 ‘data’, ‘images’, ‘ssd_mobilenet_v1_coco_11_06_2017’, ‘training’ 폴더를 ‘models/obejct_detection’ 폴더로 복사하여 붙여넣는다.
 
 ‘Desktop/models’에서 터미널을 실행한 다음 
 
-export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
-cd object_detection 
-python3 train.py --logtostderr --train_dir=training/ --pipeline_config_path=training/ssd_mobilenet_v1_pets.config
+>#### $ export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
+>#### $ cd object_detection 
+>#### $ python3 train.py --logtostderr --train_dir=training/ --pipeline_config_path=training/ssd_mobilenet_v1_pets.config
 
 step6 : 결과 확인
 =====================
 ‘Desktop/models’에서 터미널을 실행한 다음
-export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
-cd object_detection
-python3 export_inference_graph.py \
+>#### $ export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
+>#### $ cd object_detection
+>#### $ python3 export_inference_graph.py \
  --input_type image_tensor \
  --pipeline_config_path training/ssd_mobilenet_v1_pets.config \
  --trained_checkpoint_prefix training/model.ckpt-9540 \
@@ -413,23 +414,24 @@ python3 export_inference_graph.py \
  
 위 코드중 ckpt 부분을 파일 중 가장 높은 수의 파일을 기준으로 작성된 코드를 기준으로 숫자를 변경한다.
 ‘Desktop/models/object_detection’에서 터미널 실행 후 jupyter notebook으로 실행한다. ‘object_detection_tutoral.ipynb’를 클릭하고 
-Variables’ 코드를 
-# What model to download.
-MODEL_NAME = 'mac_n_cheese_graph'
-# Path to frozen detection graph. This is the actual model that is used for the object detection.
-PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
-# List of the strings that is used to add correct label for each box.
-PATH_TO_LABELS = os.path.join('training', 'object-detection.pbtxt')
-NUM_CLASSES = 1
+Variables’ 코드를
+
+    # What model to download.
+    MODEL_NAME = 'mac_n_cheese_graph'
+    # Path to frozen detection graph. This is the actual model that is used for the object detection.
+    PATH_TO_CKPT = MODEL_NAME + '/frozen_inference_graph.pb'
+    # List of the strings that is used to add correct label for each box.
+    PATH_TO_LABELS = os.path.join('training', 'object-detection.pbtxt')
+    NUM_CLASSES = 1
 
 ‘Download Model’ 코드는 삭제하고 ‘Desktop/object-detection/images’ 폴더로 이동하여 테스트 하고자 하는 몇 개의 이미지를 복사한 다음 ‘Desktop/models/object_detection/test_images’에 붙여넣습니다.붙여넣은 이미지 파일의 이름을 ‘image1.jpg’, ‘image2.jpg’ 와 같이 image + 숫자 + .jpg 로 변경합니다. Detection에 관한 코드를 이미지 개수에 맞게 변경합니다. 제 경우에는 image3.jpg ~ image5.jpg 가 test image로 활용되므로 for i in range(1,3)을 for i in range(3, 6)으로 변경했습니다.
 
-# For the sake of simplicity we will use only 2 images:
-# image1.jpg
-# image2.jpg
-# If you want to test the code with your images, just add path to the images to the TEST_IMAGE_PATHS.
-PATH_TO_TEST_IMAGES_DIR = 'test_images'
-TEST_IMAGE_PATHS = [ os.path.join(PATH_TO_TEST_IMAGES_DIR, 'image{}.jpg'.format(i)) for i in range(3, 6) ]
-# Size, in inches, of the output images.
-IMAGE_SIZE = (12, 8)
+    # For the sake of simplicity we will use only 2 images:
+    # image1.jpg
+    # image2.jpg
+    # If you want to test the code with your images, just add path to the images to the TEST_IMAGE_PATHS.
+    PATH_TO_TEST_IMAGES_DIR = 'test_images'
+    TEST_IMAGE_PATHS = [ os.path.join(PATH_TO_TEST_IMAGES_DIR, 'image{}.jpg'.format(i)) for i in range(3, 6) ]
+    # Size, in inches, of the output images.
+    IMAGE_SIZE = (12, 8)
 ‘Cell – Run All’
