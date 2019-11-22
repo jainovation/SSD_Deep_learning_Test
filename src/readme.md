@@ -436,4 +436,4 @@ Variables’ 코드를
     IMAGE_SIZE = (12, 8)
 ‘Cell – Run All’
 
-![Alt text](/SSD_DEep_learning_Test/test1.jpg
+![Alt text](/SSD_DEep_learning_Test/src/test1.png
