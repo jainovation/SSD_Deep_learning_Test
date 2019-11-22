@@ -1,13 +1,13 @@
 Docker 설치 방법
 ================
->### 1. Installing Docker Engine
+1. Installing Docker Engine
 ---------------------------------
 
 >### $ sudo wget -qO- https://get.docker.com/ | sh
 >### $ sudo usermod -aG docker $USER
 >### $ docker run hello-world
 
->### 2. Installing Docker Compose
+2. Installing Docker Compose
 ----------------------------------
 
 >### $ sudo curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
