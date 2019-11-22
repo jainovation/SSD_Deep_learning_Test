@@ -3,7 +3,7 @@
 
 >### 사용환경 : Linux, python3, tensorflow api
 step1 : Tensorflow API 설치
---------------------------
+==========================
  바탕화면에서 http://www.birc.co.kr/download/2809/ 에서 models파일을 다운받은 후 압축해제한다.
  터미널을 실행한 후 다음과 같은 라이브러리를 설치
  sudo pip install pillow - (설치가 안될 경우 pip3로 수정해서 진행하고 pip가 업그레이드 오류 시 sudo python3 -m pip uninstall pip && sudo                              apt-get install python3-pip --reinstall)
@@ -16,10 +16,11 @@ step1 : Tensorflow API 설치
  sudo python3 setup.py install
  
 >### step2 : 이미지 수집
+======================
 traffic light 사진 수집
 
 >### step3 : object labeling
-
+=============================
 git clone https://github.com/tzutalin/labelImg
 sudo apt-get install pyqt5-dev-tools
 cd labelImg
@@ -27,7 +28,7 @@ make qt5py3
 python3 labelImg.py
 
 >### step4 : TF-record 만들기
-
+==============================
 ‘object-detection’을 바탕화면에서 생성 후 ‘object-detection’폴더에서 새로운 문서의 이름을 ‘xml_to_csv.py’로 입력한 다음 저장한 다음 해당 파일을 실행합니다.
 
  import os
@@ -192,7 +193,7 @@ python3 generate_tfrecord.py --csv_input=data/train_labels.csv --output_path=dat
 python3 generate_tfrecord.py --csv_input=data/test_labels.csv --output_path=data/test.record
 
 >### step5 : 기기학습
-
+=======================================
 http://www.birc.co.kr/download/2803/  파일을 다운로드한 다음 ‘object-detection’ 폴더에 압축 해제
 
 ‘object-dection’ 폴더 내에 ‘training’ 폴더를 새롭게 생성하고 새롭게 생성된 ‘training’ 폴더 내에서 ‘ssd_mobilenet_v1_pets.config’ 라는 제목의 새로운 문서를 생성한다. 그리고 ‘ssd_mobilenet_v1_pets.config’를 실행하여 아래의 코드를 복사해서 붙여넣은 후 저장.
@@ -402,6 +403,7 @@ cd object_detection
 python3 train.py --logtostderr --train_dir=training/ --pipeline_config_path=training/ssd_mobilenet_v1_pets.config
 
 >### step6 : 결과 확인
+=====================
 ‘Desktop/models’에서 터미널을 실행한 다음
 export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
 cd object_detection
