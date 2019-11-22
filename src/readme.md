@@ -69,51 +69,51 @@ step4 : TF-record 만들기
 
 
 
- """
- Usage:
-   # From tensorflow/models/
-   # Create train data:
-   python3 generate_tfrecord.py --csv_input=data/train_labels.csv  --output_path=data/train.record
+    """
+    Usage:
+      # From tensorflow/models/
+      # Create train data:
+      python3 generate_tfrecord.py --csv_input=data/train_labels.csv  --output_path=data/train.record
 
-   # Create test data:
-   python3 generate_tfrecord.py --csv_input=data/test_labels.csv  --output_path=data/test.record
- """
- from __future__ import division
- from __future__ import print_function
- from __future__ import absolute_import
+      # Create test data:
+      python3 generate_tfrecord.py --csv_input=data/test_labels.csv  --output_path=data/test.record
+    """
+    from __future__ import division
+    from __future__ import print_function
+    from __future__ import absolute_import
 
- import os
- import io
- import pandas as pd
- import tensorflow as tf
+    import os
+    import io
+    import pandas as pd
+    import tensorflow as tf
 
- from PIL import Image
- from object_detection.utils import dataset_util
- from collections import namedtuple, OrderedDict
+    from PIL import Image
+    from object_detection.utils import dataset_util
+    from collections import namedtuple, OrderedDict
 
- flags = tf.app.flags
- flags.DEFINE_string('csv_input', '', 'Path to the CSV input')
- flags.DEFINE_string('output_path', '', 'Path to output TFRecord')
- FLAGS = flags.FLAGS
+    flags = tf.app.flags
+    flags.DEFINE_string('csv_input', '', 'Path to the CSV input')
+    flags.DEFINE_string('output_path', '', 'Path to output TFRecord')
+    FLAGS = flags.FLAGS
 
- ' TO-DO replace this with label map'
- def class_text_to_int(row_label):
-     if row_label == 'macncheese':
-         return 1
-     else:
-         None
+    ' TO-DO replace this with label map'
+    def class_text_to_int(row_label):
+        if row_label == 'macncheese':
+            return 1
+        else:
+            None
 
- def split(df, group):
-     data = namedtuple('data', ['filename', 'object'])
-     gb = df.groupby(group)
-     return [data(filename, gb.get_group(x)) for filename, x in zip(gb.groups.keys(), gb.groups)]
+    def split(df, group):
+        data = namedtuple('data', ['filename', 'object'])
+        gb = df.groupby(group)
+        return [data(filename, gb.get_group(x)) for filename, x in zip(gb.groups.keys(), gb.groups)]
 
- def create_tf_example(group, path):
-     with tf.gfile.GFile(os.path.join(path, '{}'.format(group.filename)), 'rb') as fid:
-         encoded_jpg = fid.read()
-     encoded_jpg_io = io.BytesIO(encoded_jpg)
-     image = Image.open(encoded_jpg_io)
-     width, height = image.size
+    def create_tf_example(group, path):
+        with tf.gfile.GFile(os.path.join(path, '{}'.format(group.filename)), 'rb') as fid:
+            encoded_jpg = fid.read()
+        encoded_jpg_io = io.BytesIO(encoded_jpg)
+        image = Image.open(encoded_jpg_io)
+        width, height = image.size
 
      filename = group.filename.encode('utf8')
      image_format = b'jpg'
