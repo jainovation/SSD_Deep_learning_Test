@@ -6,7 +6,7 @@ step1 : Tensorflow API 설치
 ==========================
  바탕화면에서 http://www.birc.co.kr/download/2809/ 에서 models파일을 다운받은 후 압축해제한다.
  터미널을 실행한 후 다음과 같은 라이브러리를 설치
-#### sudo pip install pillow - (설치가 안될 경우 pip3로 수정해서 진행하고 pip가 업그레이드 오류 시 sudo python3 -m pip uninstall pip &&  sudo apt-get install python3-pip --reinstall)
+>#### sudo pip install pillow - (설치가 안될 경우 pip3로 수정해서 진행하고 pip가 업그레이드 오류 시 sudo python3 -m pip uninstall pip &&  sudo apt-get install python3-pip --reinstall)
 >#### $ sudo pip install lxml
 >#### $ sudo pip install jupyter
 >#### $ sudo pip install matplotlib
@@ -21,11 +21,11 @@ traffic light 사진 수집
 
 step3 : object labeling
 =============================
-git clone https://github.com/tzutalin/labelImg
-sudo apt-get install pyqt5-dev-tools
-cd labelImg
-make qt5py3
-python3 labelImg.py
+>#### $ git clone https://github.com/tzutalin/labelImg
+>#### $ sudo apt-get install pyqt5-dev-tools
+>#### $ cd labelImg
+>#### $ make qt5py3
+>#### $ python3 labelImg.py
 
 step4 : TF-record 만들기
 ==============================
@@ -64,133 +64,133 @@ step4 : TF-record 만들기
 
 ‘object-detection’폴더에서 ‘data’라는 새로운 폴더를 생성 후 ‘object-detection’ 폴더 내에서 터미널을 열어 아래의 명령을 차례대로 실행
 
-sudo pip3 install pandas
-python3 xml_to_csv.py
+>#### $ sudo pip3 install pandas
+>#### $ python3 xml_to_csv.py
 
 ‘object-detection’폴더에서 아래 그림과 같이 오른쪽 클릭을 한 다음 새로운 문서의 이름을 ‘generate_tfrecord.py’로 입력한 다음 저장한 다음 해당 파일을 실행.
 
 
 
-"""
-Usage:
-  # From tensorflow/models/
-  # Create train data:
-  python3 generate_tfrecord.py --csv_input=data/train_labels.csv  --output_path=data/train.record
- 
-  # Create test data:
-  python3 generate_tfrecord.py --csv_input=data/test_labels.csv  --output_path=data/test.record
-"""
-from __future__ import division
-from __future__ import print_function
-from __future__ import absolute_import
- 
-import os
-import io
-import pandas as pd
-import tensorflow as tf
- 
-from PIL import Image
-from object_detection.utils import dataset_util
-from collections import namedtuple, OrderedDict
- 
-flags = tf.app.flags
-flags.DEFINE_string('csv_input', '', 'Path to the CSV input')
-flags.DEFINE_string('output_path', '', 'Path to output TFRecord')
-FLAGS = flags.FLAGS
- 
-# TO-DO replace this with label map
-def class_text_to_int(row_label):
-    if row_label == 'macncheese':
-        return 1
-    else:
-        None
- 
-def split(df, group):
-    data = namedtuple('data', ['filename', 'object'])
-    gb = df.groupby(group)
-    return [data(filename, gb.get_group(x)) for filename, x in zip(gb.groups.keys(), gb.groups)]
- 
-def create_tf_example(group, path):
-    with tf.gfile.GFile(os.path.join(path, '{}'.format(group.filename)), 'rb') as fid:
-        encoded_jpg = fid.read()
-    encoded_jpg_io = io.BytesIO(encoded_jpg)
-    image = Image.open(encoded_jpg_io)
-    width, height = image.size
- 
-    filename = group.filename.encode('utf8')
-    image_format = b'jpg'
-    xmins = []
-    xmaxs = []
-    ymins = []
-    ymaxs = []
-    classes_text = []
-    classes = []
- 
-    for index, row in group.object.iterrows():
-        xmins.append(row['xmin'] / width)
-        xmaxs.append(row['xmax'] / width)
-        ymins.append(row['ymin'] / height)
-        ymaxs.append(row['ymax'] / height)
-        classes_text.append(row['class'].encode('utf8'))
-        classes.append(class_text_to_int(row['class']))
- 
-    tf_example = tf.train.Example(features=tf.train.Features(feature={
-        'image/height': dataset_util.int64_feature(height),
-        'image/width': dataset_util.int64_feature(width),
-        'image/filename': dataset_util.bytes_feature(filename),
-        'image/source_id': dataset_util.bytes_feature(filename),
-        'image/encoded': dataset_util.bytes_feature(encoded_jpg),
-        'image/format': dataset_util.bytes_feature(image_format),
-        'image/object/bbox/xmin': dataset_util.float_list_feature(xmins),
-        'image/object/bbox/xmax': dataset_util.float_list_feature(xmaxs),
-        'image/object/bbox/ymin': dataset_util.float_list_feature(ymins),
-        'image/object/bbox/ymax': dataset_util.float_list_feature(ymaxs),
-        'image/object/class/text': dataset_util.bytes_list_feature(classes_text),
-        'image/object/class/label': dataset_util.int64_list_feature(classes),
-    }))
-    return tf_example
+ """
+ Usage:
+   # From tensorflow/models/
+   # Create train data:
+   python3 generate_tfrecord.py --csv_input=data/train_labels.csv  --output_path=data/train.record
 
-def main(_):
-    writer = tf.python_io.TFRecordWriter(FLAGS.output_path)
-    path = os.path.join(os.getcwd(), 'images')
-    examples = pd.read_csv(FLAGS.csv_input)
-    grouped = split(examples, 'filename')
-    for group in grouped:
-        tf_example = create_tf_example(group, path)
-        writer.write(tf_example.SerializeToString())
- 
-    writer.close()
-    output_path = os.path.join(os.getcwd(), FLAGS.output_path)
-    print('Successfully created the TFRecords: {}'.format(output_path))
- 
- 
-if __name__ == '__main__':
-    tf.app.run()
+   # Create test data:
+   python3 generate_tfrecord.py --csv_input=data/test_labels.csv  --output_path=data/test.record
+ """
+ from __future__ import division
+ from __future__ import print_function
+ from __future__ import absolute_import
+
+ import os
+ import io
+ import pandas as pd
+ import tensorflow as tf
+
+ from PIL import Image
+ from object_detection.utils import dataset_util
+ from collections import namedtuple, OrderedDict
+
+ flags = tf.app.flags
+ flags.DEFINE_string('csv_input', '', 'Path to the CSV input')
+ flags.DEFINE_string('output_path', '', 'Path to output TFRecord')
+ FLAGS = flags.FLAGS
+
+ # TO-DO replace this with label map
+ def class_text_to_int(row_label):
+     if row_label == 'macncheese':
+         return 1
+     else:
+         None
+
+ def split(df, group):
+     data = namedtuple('data', ['filename', 'object'])
+     gb = df.groupby(group)
+     return [data(filename, gb.get_group(x)) for filename, x in zip(gb.groups.keys(), gb.groups)]
+
+ def create_tf_example(group, path):
+     with tf.gfile.GFile(os.path.join(path, '{}'.format(group.filename)), 'rb') as fid:
+         encoded_jpg = fid.read()
+     encoded_jpg_io = io.BytesIO(encoded_jpg)
+     image = Image.open(encoded_jpg_io)
+     width, height = image.size
+
+     filename = group.filename.encode('utf8')
+     image_format = b'jpg'
+     xmins = []
+     xmaxs = []
+     ymins = []
+     ymaxs = []
+     classes_text = []
+     classes = []
+
+     for index, row in group.object.iterrows():
+         xmins.append(row['xmin'] / width)
+         xmaxs.append(row['xmax'] / width)
+         ymins.append(row['ymin'] / height)
+         ymaxs.append(row['ymax'] / height)
+         classes_text.append(row['class'].encode('utf8'))
+         classes.append(class_text_to_int(row['class']))
+
+     tf_example = tf.train.Example(features=tf.train.Features(feature={
+         'image/height': dataset_util.int64_feature(height),
+         'image/width': dataset_util.int64_feature(width),
+         'image/filename': dataset_util.bytes_feature(filename),
+         'image/source_id': dataset_util.bytes_feature(filename),
+         'image/encoded': dataset_util.bytes_feature(encoded_jpg),
+         'image/format': dataset_util.bytes_feature(image_format),
+         'image/object/bbox/xmin': dataset_util.float_list_feature(xmins),
+         'image/object/bbox/xmax': dataset_util.float_list_feature(xmaxs),
+         'image/object/bbox/ymin': dataset_util.float_list_feature(ymins),
+         'image/object/bbox/ymax': dataset_util.float_list_feature(ymaxs),
+         'image/object/class/text': dataset_util.bytes_list_feature(classes_text),
+         'image/object/class/label': dataset_util.int64_list_feature(classes),
+     }))
+     return tf_example
+
+ def main(_):
+     writer = tf.python_io.TFRecordWriter(FLAGS.output_path)
+     path = os.path.join(os.getcwd(), 'images')
+     examples = pd.read_csv(FLAGS.csv_input)
+     grouped = split(examples, 'filename')
+     for group in grouped:
+         tf_example = create_tf_example(group, path)
+         writer.write(tf_example.SerializeToString())
+
+     writer.close()
+     output_path = os.path.join(os.getcwd(), FLAGS.output_path)
+     print('Successfully created the TFRecords: {}'.format(output_path))
+
+
+ if __name__ == '__main__':
+     tf.app.run()
 
 >## -> 해당 코딩이 오류가 발생할 시 main을 다음과 같이 변경한다.
-def main(_):    
-    print(os.getcwd())
-    writer = tf.python_io.TFRecordWriter('data/train.record')
-    # path = os.path.join(FLAGS.image_dir)
-    path = 'images/train'
-    # examples = pd.read_csv(FLAGS.csv_input)
-    examples = pd.read_csv('data/train_labels.csv')
-    grouped = split(examples, 'filename')
-    for group in grouped:
-        tf_example = create_tf_example(group, path)
-        writer.write(tf_example.SerializeToString())
-    writer.close()
-    output_path = os.path.join(os.getcwd(), FLAGS.output_path)
-    print('Successfully created the TFRecords: {}'.format(output_path))
+ def main(_):    
+     print(os.getcwd())
+     writer = tf.python_io.TFRecordWriter('data/train.record')
+     # path = os.path.join(FLAGS.image_dir)
+     path = 'images/train'
+     # examples = pd.read_csv(FLAGS.csv_input)
+     examples = pd.read_csv('data/train_labels.csv')
+     grouped = split(examples, 'filename')
+     for group in grouped:
+         tf_example = create_tf_example(group, path)
+         writer.write(tf_example.SerializeToString())
+     writer.close()
+     output_path = os.path.join(os.getcwd(), FLAGS.output_path)
+     print('Successfully created the TFRecords: {}'.format(output_path))
 
 >## main문을 다음과 같이 변경했을 경우 test
    
 ‘Desktop/models’에서 터미널을 열어
-export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
-cd ..
-cd object-detection
-python3 generate_tfrecord.py --csv_input=data/train_labels.csv --output_path=data/train.record
-python3 generate_tfrecord.py --csv_input=data/test_labels.csv --output_path=data/test.record
+>#### $ export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
+>#### $ cd ..
+>#### $ cd object-detection
+>#### $ python3 generate_tfrecord.py --csv_input=data/train_labels.csv --output_path=data/train.record
+>#### $ python3 generate_tfrecord.py --csv_input=data/test_labels.csv --output_path=data/test.record
 
 step5 : 기기학습
 =======================================
