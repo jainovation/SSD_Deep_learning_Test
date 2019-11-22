@@ -30,36 +30,36 @@ step3 : object labeling
 step4 : TF-record 만들기
 ==============================
 ### ‘object-detection’을 바탕화면에서 생성 후 ‘object-detection’폴더에서 새로운 문서의 이름을 ‘xml_to_csv.py’로 입력한 다음 저장한 다음 해당 파일을 실행합니다.
- import os
- import glob
- import pandas as pd
- import xml.etree.ElementTree as ET
- def xml_to_csv(path):
-     xml_list = []
-     for xml_file in glob.glob(path + '/*.xml'):
-         tree = ET.parse(xml_file)
-         root = tree.getroot()
-         for member in root.findall('object'):
-             value = (root.find('filename').text,
-                      int(root.find('size')[0].text),
-                      int(root.find('size')[1].text),
-                      member[0].text,
-                      int(member[4][0].text),
-                      int(member[4][1].text),
-                      int(member[4][2].text),
-                      int(member[4][3].text)
-                      )
-             xml_list.append(value)
-     column_name = ['filename', 'width', 'height', 'class', 'xmin', 'ymin', 'xmax', 'ymax']
-     xml_df = pd.DataFrame(xml_list, columns=column_name)
-     return xml_df
- def main():
-     for directory in ['train','test']:
-         image_path = os.path.join(os.getcwd(), 'images/{}'.format(directory))
-         xml_df = xml_to_csv(image_path)
-         xml_df.to_csv('data/{}_labels.csv'.format(directory), index=None)
-         print('Successfully converted xml to csv.')
- main()
+    import os
+    import glob
+    import pandas as pd
+    import xml.etree.ElementTree as ET
+    def xml_to_csv(path):
+        xml_list = []
+        for xml_file in glob.glob(path + '/*.xml'):
+            tree = ET.parse(xml_file)
+            root = tree.getroot()
+            for member in root.findall('object'):
+                value = (root.find('filename').text,
+                         int(root.find('size')[0].text),
+                         int(root.find('size')[1].text),
+                         member[0].text,
+                         int(member[4][0].text),
+                         int(member[4][1].text),
+                         int(member[4][2].text),
+                         int(member[4][3].text)
+                         )
+                xml_list.append(value)
+        column_name = ['filename', 'width', 'height', 'class', 'xmin', 'ymin', 'xmax', 'ymax']
+        xml_df = pd.DataFrame(xml_list, columns=column_name)
+        return xml_df
+    def main():
+        for directory in ['train','test']:
+            image_path = os.path.join(os.getcwd(), 'images/{}'.format(directory))
+            xml_df = xml_to_csv(image_path)
+            xml_df.to_csv('data/{}_labels.csv'.format(directory), index=None)
+            print('Successfully converted xml to csv.')
+    main()
 ‘object-detection’폴더에서 ‘data’라는 새로운 폴더를 생성 후 ‘object-detection’ 폴더 내에서 터미널을 열어 아래의 명령을 차례대로 실행
 
 >#### $ sudo pip3 install pandas
