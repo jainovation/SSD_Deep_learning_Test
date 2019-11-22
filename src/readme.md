@@ -435,6 +435,7 @@ Variables’ 코드를
     # Size, in inches, of the output images.
     IMAGE_SIZE = (12, 8)
 ‘Cell – Run All’
-
+>### 결과이미지
 ![test1](https://user-images.githubusercontent.com/55830662/69397442-8ab29100-0d29-11ea-9779-57910137c50f.png)
-
+![test2](https://user-images.githubusercontent.com/55830662/69397459-a322ab80-0d29-11ea-9667-4ccb52dfbe02.png)
+![test3](https://user-images.githubusercontent.com/55830662/69397474-b33a8b00-0d29-11ea-9c15-2a20663f6d53.png)
