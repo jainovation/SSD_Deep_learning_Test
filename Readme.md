@@ -8,8 +8,6 @@
 >## env
 >### tensorflow 1.14.0, tensorflow-gpu 1.14.0, keras default, numpy 1.16.4, scipy default, matplotlib default, spyder default, apt-get install python3-tk, apt-get install python3
 
->### prototype scenario
-
 >#### 1. 가상환경 선정 (ex.nvidia docker 환경구축)
 >#### 2. 학습시킬 표지판 5종 선정 및 자료수집
 >#### 3. 라벨링 및 weight 파일 작성
